@@ -22,7 +22,9 @@ Axios for fetching data
 ### Project Setup:
 
 Clone the repository: git clone https://github.com/ManuSaini9084/Stock-Dashboard.git
+
 Install dependencies: npm install
+
 Run the application: npm start
 
 ### Dashboard
