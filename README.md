@@ -29,4 +29,5 @@ Run the application: npm start
 
 ### Dashboard
 
-![Screenshot (109)](https://github.com/ManuSaini9084/Stock-Dashboard/assets/139550825/2ace85d7-ae33-4922-bd53-ab6ccc359ab5)
+![Screenshot (109)](https://github.com/ManuSaini9084/Stock-Dashboard/assets/139550825/06c58bbd-0b9b-4b5d-81be-ab87193f3e78)
+
