@@ -30,7 +30,9 @@ const SectorPerformance = () => {
               
             >
               <span>{sector.name}</span>
-              <span style={{ background: sector.change > 0 ? `rgba(0, 255, 0, ${Math.abs(sector.change) / 10})` : `rgba(255, 0, 0, ${Math.abs(sector.change) / 10})` }}>{sector.change}%</span>
+              <span className={`w-20 text-center rounded ${sector.change > 0 ? 'text-green-400 bg-green-200 bg-opacity-15' : 'text-red-500 bg-red-200 bg-opacity-25'}`}>
+                ({sector.change}%)
+              </span>
             </li>
           ))}
         </ul>
@@ -42,7 +44,9 @@ const SectorPerformance = () => {
               
             >
               <span>{sector.name}</span>
-              <span style={{ background: sector.change > 0 ? `rgba(0, 255, 0, ${Math.abs(sector.change) / 10})` : `rgba(255, 0, 0, ${Math.abs(sector.change) / 10})` }}>{sector.change}%</span>
+              <span className={`w-20 text-center rounded ${sector.change > 0 ? 'text-green-500 bg-green-200 bg-opacity-25' : 'text-red-500 bg-red-200 bg-opacity-25'}`}>
+                ({sector.change}%)
+              </span>
             </li>
           ))}
         </ul>

@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Chart from 'chart.js/auto';
 
-// Define the chart data directly in your component
+// Sample data for demonstration
 const chartData = {
   labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   prices: [
@@ -18,29 +18,78 @@ const ChartSection = () => {
   const chartRef = useRef(null);
   let myChart = null;
 
+  const [timeRange, setTimeRange] = useState('All');
+
+  const getFilteredData = () => {
+    const { labels, prices, movingAverage } = chartData;
+
+    let filteredLabels = labels;
+    let filteredPrices = prices;
+    let filteredMovingAverage = movingAverage;
+
+    switch (timeRange) {
+      case '1D':
+        filteredLabels = labels.slice(-1);
+        filteredPrices = prices.slice(-1);
+        filteredMovingAverage = movingAverage.slice(-1);
+        break;
+      case '5D':
+        filteredLabels = labels.slice(-5);
+        filteredPrices = prices.slice(-5);
+        filteredMovingAverage = movingAverage.slice(-5);
+        break;
+      case '1M':
+        filteredLabels = labels.slice(-30);
+        filteredPrices = prices.slice(-30);
+        filteredMovingAverage = movingAverage.slice(-30);
+        break;
+      case '3M':
+        filteredLabels = labels.slice(-90);
+        filteredPrices = prices.slice(-90);
+        filteredMovingAverage = movingAverage.slice(-90);
+        break;
+      case '1Y':
+        filteredLabels = labels.slice(-12);
+        filteredPrices = prices.slice(-12);
+        filteredMovingAverage = movingAverage.slice(-12);
+        break;
+      case '5Y':
+        filteredLabels = labels.slice(-60);
+        filteredPrices = prices.slice(-60);
+        filteredMovingAverage = movingAverage.slice(-60);
+        break;
+      case 'All':
+        break;
+      default:
+        break;
+    }
+
+    return { filteredLabels, filteredPrices, filteredMovingAverage };
+  };
+
   useEffect(() => {
     if (myChart) {
       myChart.destroy(); // Destroy the existing chart if it exists
     }
 
-    const { labels, prices, movingAverage } = chartData;
+    const { filteredLabels, filteredPrices, filteredMovingAverage } = getFilteredData();
 
     const ctx = chartRef.current.getContext('2d');
     myChart = new Chart(ctx, {
       type: 'line',
       data: {
-        labels,
+        labels: filteredLabels,
         datasets: [
           {
             label: 'S&P 500',
-            data: prices,
+            data: filteredPrices,
             borderColor: 'rgba(255, 255, 255, 1)',  // White color
             backgroundColor: 'rgba(255, 255, 255, 0.2)',
             fill: false,
           },
           {
             label: 'Moving Average',
-            data: movingAverage,
+            data: filteredMovingAverage,
             borderColor: 'rgba(255, 165, 0, 1)',  // Orange color
             backgroundColor: 'rgba(255, 165, 0, 0.2)',
             fill: false,
@@ -52,7 +101,7 @@ const ChartSection = () => {
         scales: {
           x: {
             type: 'category',
-            labels,
+            labels: filteredLabels,
           },
           y: {
             beginAtZero: false,
@@ -72,7 +121,11 @@ const ChartSection = () => {
         myChart.destroy();
       }
     };
-  }, []);
+  }, [timeRange]);
+
+  const handleTimeRangeChange = (range) => {
+    setTimeRange(range);
+  };
 
   return (
     <section className="col-span-1 lg:col-span-1 mb-4 p-4 bg-zinc-900 rounded">
@@ -88,6 +141,19 @@ const ChartSection = () => {
             <span className="text-gray-500">Moving Average</span>
           </div>
         </div>
+      </div>
+      <div className="flex space-x-2 mb-4">
+        {['1D', '5D', '1M', '3M', '1Y', '5Y', 'All'].map((range) => (
+          <button
+            key={range}
+            className={`p-2 bg-zinc-900 text-white border border-gray-600 rounded ${
+              timeRange === range ? 'bg-gray-700' : ''
+            }`}
+            onClick={() => handleTimeRangeChange(range)}
+          >
+            {range}
+          </button>
+        ))}
       </div>
       <div className="text-gray-500 mb-4">498.84</div>
       <canvas ref={chartRef}></canvas>
